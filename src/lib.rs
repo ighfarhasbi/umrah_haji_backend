@@ -15,11 +15,11 @@ pub async fn run() -> Result<(), String> {
     let pool = PgPoolOptions::new()
         .max_connections(10)
         .min_connections(5)
-        .acquire_timeout(Duration::from_secs(5))
-        .idle_timeout(Duration::from_secs(60))
+        .acquire_timeout(Duration::from_secs(600))
+        .idle_timeout(Duration::from_secs(600))
         .connect(&database_url)
         .await
-        .map_err(|_| "Failed to connect to database".to_string())?;
+        .map_err(|e| e.to_string())?;
 
     let app = routes::create_route(pool).await;
 
