@@ -1,8 +1,8 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 pub struct HistoricalSites {
-    pub id: i64,
+    pub id: Option<i64>,
     pub name: String,
     pub location: String,
     pub description: Option<String>,
@@ -15,4 +15,15 @@ pub struct HistoricalSites {
     pub category_id: Option<i64>,
     pub created_at: Option<String>,
     pub updated_at: Option<String>,
+}
+
+#[derive(Serialize)]
+pub struct HistoricalSitesResponse {
+    pub name: String,
+    pub category_id: Option<i64>,
+    pub description: Option<String>,
+    pub location: String,
+    pub updated_at: Option<String>,
+    pub created_at: Option<String>,
+    pub id: i64,
 }

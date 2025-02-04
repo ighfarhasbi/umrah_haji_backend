@@ -5,8 +5,8 @@ mod news_handler;
 mod doas_handler;
 
 use axum::{middleware, routing::{get, post}, Extension, Router};
-use doas_handler::get_doas;
-use historical_sites_handler::get_historical_sites;
+use doas_handler::{add_doas, get_doas};
+use historical_sites_handler::{add_historical_sites, get_historical_sites};
 use home_slider_handler::get_sliders;
 use news_handler::get_news;
 use sqlx::{Pool, Postgres};
@@ -18,8 +18,10 @@ pub async fn create_route(conn: Pool<Postgres>) -> Router {
     Router::new()
         // .route("/api/v1/login", get(get_user))
         .route("/api/v1/doas", get(get_doas))
+        .route("/api/v1/doas", post(add_doas))
         .route("/api/v1/news", get(get_news))
         .route("/api/v1/historical_sites", get(get_historical_sites))
+        .route("/api/v1/historical_sites", post(add_historical_sites))
         .route("/api/v1/slider", get(get_sliders))
         .route_layer(middleware::from_fn(guard_route))
         .route("/api/v1/user/sign_in", post(sign_in))

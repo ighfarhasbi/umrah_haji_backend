@@ -51,7 +51,7 @@ pub fn refresh_access_token(refresh_token: &str) -> Result<String, StatusCode> {
 }
 
 pub fn create_access_token() -> Result<String, StatusCode> {
-    create_jwt(Duration::hours(5))
+    create_jwt(Duration::minutes(15))
 }
 
 pub fn create_refresh_token() -> Result<String, StatusCode> {
