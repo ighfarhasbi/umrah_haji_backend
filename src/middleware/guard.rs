@@ -34,7 +34,6 @@ pub async fn guard_route (
     let ref_token_str: String;
     match user {
         Ok(result) => {
-            // println!("ini usernya dari guard = {:?}", result);
             if result.access_token == "" {
                 // return Err((StatusCode::UNAUTHORIZED, "Token tidak valid".to_string())); // jika token tidak valid maka akan berhenti disini
                 return Ok((StatusCode::UNAUTHORIZED, Json(ResponseModel {
@@ -63,8 +62,8 @@ pub async fn guard_route (
             let new_acc_token = refresh_access_token(&ref_token_str);
             match new_acc_token {
                 Ok(new_access_token) => { 
-                    // println!("access token baru => {:?}", new_acc_token);
-                    let _ = update_token(conn2, new_access_token.clone(), token);
+                    let _ = update_token(conn2, new_access_token.clone(), token)
+                        .await;
 
                     // Update token di header request
                     let headers = request.headers_mut();
@@ -121,7 +120,7 @@ async fn cek_token(conn: Extension<Pool<Postgres>>, token: String) -> Result<Val
     })
 }
 
-async fn update_token (conn: Extension<Pool<Postgres>>, new_token: String, old_token: String) -> Result<(), (StatusCode, String)> {
+async fn update_token(conn: Extension<Pool<Postgres>>, new_token: String, old_token: String) -> Result<(), (StatusCode, String)> {
     let conn = conn.0;
     sqlx::query("UPDATE token_user SET access_token = $1 WHERE access_token = $2")
        .bind(&new_token)
