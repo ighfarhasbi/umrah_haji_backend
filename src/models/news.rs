@@ -1,8 +1,8 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 pub struct News {
-    pub id: i64,
+    pub id: Option<i64>,
     pub title: String,
     pub content: String,
     pub image_url: Option<String>,

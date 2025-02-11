@@ -1,9 +1,9 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 pub struct HomeSliders {
-    pub id: i64,
-    #[serde(rename = "type")]
+    pub id: Option<i64>,
+    #[serde(rename = "type")] // Karena "type" merupakan salah satu variabel yg ada dalam rust. Jadi perlu modif agar sama dengan yg ada di db
     pub r#type: String,
     pub title: Option<String>,
     pub descs: Option<String>,

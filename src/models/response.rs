@@ -13,3 +13,9 @@ pub struct ValueCekToken {
     pub access_token: String,
     pub refresh_token: String,
 }
+
+#[derive(Serialize)]
+pub struct ResponseMessage {
+    pub status: String,
+    pub message: String,
+}
