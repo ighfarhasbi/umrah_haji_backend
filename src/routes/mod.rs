@@ -3,12 +3,14 @@ mod user_handler;
 mod historical_sites_handler;
 mod news_handler;
 mod doas_handler;
+mod faqs_handler;
 
 use axum::{middleware, routing::{delete, get, post, put}, Extension, Router};
 use doas_handler::{add_doas, delete_doas, get_doas, update_doas};
 use historical_sites_handler::{add_historical_sites, delete_historical_sites, get_historical_sites, update_historical_sites};
 use home_slider_handler::{add_slider, delete_slider, get_sliders, update_slider};
 use news_handler::{add_news, delete_news, get_news, update_news};
+use faqs_handler::{add_faqs, delete_faqs, get_faqs, update_faqs};
 use sqlx::{Pool, Postgres};
 use user_handler::{login_user, sign_in};
 
@@ -33,6 +35,10 @@ pub async fn create_route(conn: Pool<Postgres>) -> Router {
         .route("/api/v1/slider", post(add_slider))
         .route("/api/v1/slider/{id}", put(update_slider))
         .route("/api/v1/slider/{id}", delete(delete_slider))
+        .route("/api/v1/faqs", get(get_faqs))
+        .route("/api/v1/faqs", post(add_faqs))
+        .route("/api/v1/faqs/{id}", put(update_faqs))
+        .route("/api/v1/faqs/{id}", delete(delete_faqs))
         .route_layer(middleware::from_fn(guard_route))
         .route("/api/v1/user/sign_in", post(sign_in))
         .route("/api/v1/user/login", post(login_user))
