@@ -4,6 +4,7 @@ mod historical_sites_handler;
 mod news_handler;
 mod doas_handler;
 mod faqs_handler;
+mod waktu_solat_handler;
 
 use axum::{middleware, routing::{delete, get, post, put}, Extension, Router};
 use doas_handler::{add_doas, delete_doas, get_doas, update_doas};
@@ -13,6 +14,7 @@ use news_handler::{add_news, delete_news, get_news, update_news};
 use faqs_handler::{add_faqs, delete_faqs, get_faqs, update_faqs};
 use sqlx::{Pool, Postgres};
 use user_handler::{login_user, sign_in};
+use waktu_solat_handler::get_prayer_times;
 
 use crate::middleware::guard::guard_route;
 
@@ -39,6 +41,7 @@ pub async fn create_route(conn: Pool<Postgres>) -> Router {
         .route("/api/v1/faqs", post(add_faqs))
         .route("/api/v1/faqs/{id}", put(update_faqs))
         .route("/api/v1/faqs/{id}", delete(delete_faqs))
+        .route("/api/v1/waktu_solat", get(get_prayer_times))
         .route_layer(middleware::from_fn(guard_route))
         .route("/api/v1/user/sign_in", post(sign_in))
         .route("/api/v1/user/login", post(login_user))
